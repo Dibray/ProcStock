@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="styles.css">
+    <script defer src="scripts.js"></script>
 
     <title>ProcStock</title>
 </head>
@@ -14,18 +15,11 @@
     <div>
         <table class="stocks" style="border: 1px solid black;">
             <tr>
-                <td rowspan="0" class="new-item">+</td>
+                <td rowspan="0" class="add-stock"><button class="add-stock-btn">+</button></td>
                 <td>Name</td>
                 <td>Unit Price</td>
                 <td>Quantity</td>
                 <td>Total</td>
-            </tr>
-            <tr class="stock-info">
-                <td><input type="text" placeholder="Stock" class="stock-name"></td>
-                <td><input type="number" placeholder="0" class="unit-price"></td>
-                <td><input type="number" placeholder="0" class="quantity"></td>
-                <td class="stock-price"></td>
-                <td class="remove-stock">-</td>
             </tr>
         </table>
 
