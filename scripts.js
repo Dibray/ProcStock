@@ -24,26 +24,44 @@ function renderStock(stock) // Add stock to stock info table
 */
 
 class Stock
-{
+{    
+    stockName = document.createElement("input");
+    unitPrice = document.createElement("input");
+    quantity = document.createElement("input");
+    stockPrice = document.createElement("span");
+
     constructor()
     {
-        this.stockName = document.createElement("input");
         this.stockName.type = "text";
         this.stockName.placeholder = "Stock";
         this.stockName.className = "stock-name";
 
-        this.unitPrice = document.createElement("input");
         this.unitPrice.type = "number";
         this.unitPrice.placeholder = "0";
         this.unitPrice.className = "unit-price";
-
-        this.quantity = document.createElement("input");
+        this.unitPrice.addEventListener("click", () => { this.#calcPrice(this); });
+        this.unitPrice.addEventListener("keypress", () => { if(this.#isEnter(event.key)) this.#calcPrice(this); });
+        
         this.quantity.type = "number";
         this.quantity.placeholder = "0";
         this.quantity.className = "quantity";
+        this.quantity.addEventListener("click", () => { this.#calcPrice(this); });
+        this.quantity.addEventListener("keypress", () => { if (this.#isEnter(event.key)) this.#calcPrice(this); });
 
-        this.stockPrice = document.createElement("span");
-        this.stockPrice.textContent = "0.0";
+        this.stockPrice.textContent = 0.0;
+    }
+
+    #calcPrice(stock)
+    {
+        stock.stockPrice.textContent = stock.unitPrice.value * stock.quantity.value;
+    }
+
+    #isEnter(key)
+    {
+        if (key == "Enter")
+            return true;
+        
+        return false;
     }
 }
 
