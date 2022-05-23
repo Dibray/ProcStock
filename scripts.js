@@ -54,6 +54,7 @@ class Stock
     #calcPrice(stock)
     {
         stock.stockPrice.textContent = stock.unitPrice.value * stock.quantity.value;
+        StockProcessing.procTotal();
     }
 
     #isEnter(key)
@@ -65,12 +66,47 @@ class Stock
     }
 }
 
-var stocks = [];
+class StockProcessing
+{
+    static #stocks = [];
+    static #vatPercent = 0.09;
+    static #precision = 4; // Fractional digits
+
+    static add(stock)
+    {
+        this.#stocks.push(stock);
+    }
+
+    static #procTotalPrice()
+    {
+        let price = 0.0;
+
+        for (const x of this.#stocks)
+            price += Number(x.stockPrice.textContent);
+
+        return price;
+    }
+
+    static procTotal()
+    {
+        let total = this.#procTotalPrice();
+
+        document.querySelector(".price-value").textContent = total.toFixed(this.#precision);
+
+        // Process VAT
+        let vat = total * this.#vatPercent;
+        document.querySelector(".vat-value").textContent = vat.toFixed(this.#precision);
+
+        // Process TOTAL
+        total += vat;
+        document.querySelector(".total-value").textContent = total.toFixed(this.#precision);
+    }
+}
 
 function newStock()
 {
     let stock = new Stock();
-    stocks.push(stock);
+    StockProcessing.add(stock);
 
     renderStock(stock);
 }
