@@ -1,34 +1,10 @@
-function newColumn(content, table)
-{
-    let t = document.createElement("td");
-    t.appendChild(content);
-    table.appendChild(t);
-}
-
-function renderStock(stock) // Add stock to stock info table
-{
-    let newStock = document.createElement("tr");
-    newStock.className = "stock-info";
-
-    newColumn(stock.stockName, newStock);
-    newColumn(stock.unitPrice, newStock);
-    newColumn(stock.quantity, newStock);
-    newColumn(stock.stockPrice, newStock);
-
-    document.querySelector(".stocks > tbody").append(newStock);
-}
-/*
-<tr class="stock-info">
-    <td class="remove-stock">-</td>
-</tr>
-*/
-
 class Stock
 {    
     stockName = document.createElement("input");
     unitPrice = document.createElement("input");
     quantity = document.createElement("input");
     stockPrice = document.createElement("span");
+    remove = document.createElement("button");
 
     constructor()
     {
@@ -49,6 +25,9 @@ class Stock
         this.quantity.addEventListener("keypress", () => { if (this.#isEnter(event.key)) this.#calcPrice(this); });
 
         this.stockPrice.textContent = 0.0;
+
+        this.remove.textContent = "–";
+        this.remove.className = "remove-btn";
     }
 
     #calcPrice(stock)
@@ -72,11 +51,6 @@ class StockProcessing
     static #vatPercent = 0.09;
     static #precision = 4; // Fractional digits
 
-    static add(stock)
-    {
-        this.#stocks.push(stock);
-    }
-
     static #procTotalPrice()
     {
         let price = 0.0;
@@ -85,6 +59,36 @@ class StockProcessing
             price += Number(x.stockPrice.textContent);
 
         return price;
+    }
+
+    static #newColumn(content, table)
+    {
+        let t = document.createElement("td");
+        t.appendChild(content);
+        table.appendChild(t);
+    }
+
+    static #remove(stock, domElem) // Delete stock from array and DOM
+    {
+        this.#stocks.splice(this.#stocks.indexOf(stock), 1);
+        domElem.remove();
+        this.procTotal();
+    }
+
+    static #renderStock(stock) // Add stock to stock info table
+    {
+        let newStock = document.createElement("tr");
+        newStock.className = "stock-info";
+
+        this.#newColumn(stock.stockName, newStock);
+        this.#newColumn(stock.unitPrice, newStock);
+        this.#newColumn(stock.quantity, newStock);
+        this.#newColumn(stock.stockPrice, newStock);
+        this.#newColumn(stock.remove, newStock);
+
+        stock.remove.addEventListener("click", () => { this.#remove(stock, newStock); });
+
+        document.querySelector(".stocks > tbody").append(newStock);
     }
 
     static procTotal()
@@ -101,15 +105,15 @@ class StockProcessing
         total += vat;
         document.querySelector(".total-value").textContent = total.toFixed(this.#precision);
     }
+
+    static newStock()
+    {
+        let stock = new Stock();
+        this.#stocks.push(stock);
+
+        this.#renderStock(stock);
+    }
 }
 
-function newStock()
-{
-    let stock = new Stock();
-    StockProcessing.add(stock);
-
-    renderStock(stock);
-}
-
-document.querySelector(".add-stock-btn").addEventListener("click", newStock);
-newStock(); // Initialize first stock
+document.querySelector(".add-stock-btn").addEventListener("click", () => { StockProcessing.newStock(); });
+StockProcessing.newStock(); // Initialize first stock

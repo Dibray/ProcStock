@@ -11,14 +11,23 @@ body, input {
     vertical-align: bottom;
 }
 
-.add-stock-btn {
+.add-stock-btn,
+.remove-btn {
     background-color: rgba(255, 255, 255, 0);
     border: none;
-    font-size: 1.2em;
+    font-size: 1.4em;
+}
+
+.add-stock-btn {
     color: rgb(0, 192, 0);
 }
 
-.add-stock-btn:hover {
+.remove-btn {
+    color: rgb(255, 63, 63);
+}
+
+.add-stock-btn:hover,
+.remove-btn:hover {
     cursor: pointer;
 }
 
