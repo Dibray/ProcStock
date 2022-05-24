@@ -45,9 +45,23 @@ class Stock
     }
 }
 
+class Promocode
+{
+    code = null;
+    discountPercent = null;
+
+    constructor(code, percent)
+    {
+        this.code = code;
+        this.discountPercent = percent;
+    }
+}
+
 class StockProcessing
 {
     static #stocks = [];
+    static #promocodes = [new Promocode("dis10", 0.1), new Promocode("dis20", 0.2), new Promocode("dis30", 0.3)];
+
     static #vatPercent = 0.09;
     static #precision = 4; // Fractional digits
 
@@ -85,10 +99,39 @@ class StockProcessing
         this.#newColumn(stock.quantity, newStock);
         this.#newColumn(stock.stockPrice, newStock);
         this.#newColumn(stock.remove, newStock);
-
+        
         stock.remove.addEventListener("click", () => { this.#remove(stock, newStock); });
-
+        
         document.querySelector(".stocks > tbody").append(newStock);
+    }
+
+    static #promocodeDiscountInfo(total, discount) // Render promocode discount info
+    {
+        let info = document.querySelector(".promocode-discount-info");
+
+        if (info !== null)
+            info.remove();
+
+        if (discount == 0)
+            return;
+            
+        info = document.createElement("p");
+        info.className = "promocode-discount-info";
+        info.textContent =
+            "Promocode discount " + (discount * 100) + "% (-" + (total * discount).toFixed(this.#precision) + ")";
+
+        document.querySelector(".promocode-form").appendChild(info);
+    }
+    
+    static #promocodeDiscount()
+    {
+        let promocode = document.querySelector(".promocode-field").value;
+
+        for (const x of this.#promocodes)
+            if (x.code == promocode)
+                return x.discountPercent;
+        
+        return 0; // No promocode - no discount
     }
 
     static procTotal()
@@ -100,12 +143,17 @@ class StockProcessing
         // Process VAT
         let vat = total * this.#vatPercent;
         document.querySelector(".vat-value").textContent = vat.toFixed(this.#precision);
-
-        // Process TOTAL
         total += vat;
+
+        // Process promocode
+        let promocodeDiscount = this.#promocodeDiscount();
+        this.#promocodeDiscountInfo(total, promocodeDiscount);
+        
+        total = total * (1 - promocodeDiscount);
+
         document.querySelector(".total-value").textContent = total.toFixed(this.#precision);
     }
-
+    
     static newStock()
     {
         let stock = new Stock();
@@ -117,3 +165,5 @@ class StockProcessing
 
 document.querySelector(".add-stock-btn").addEventListener("click", () => { StockProcessing.newStock(); });
 StockProcessing.newStock(); // Initialize first stock
+
+document.querySelector(".promocode-submit").addEventListener("click", () => { StockProcessing.procTotal(); });

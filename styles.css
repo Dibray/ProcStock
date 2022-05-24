@@ -1,12 +1,13 @@
 body {
     margin: 0;
-}
-
-body, input {
     font-size: calc(1em + 1vh);
 }
 
 /* Stocks */
+.stocks input {
+    font-size: calc(1em + 1vh);
+}
+
 .stocks .add-stock {
     vertical-align: bottom;
 }
@@ -48,4 +49,26 @@ body, input {
     margin: 5% auto;
     font-size: 1.3em;
     font-weight: bold;
+    vertical-align: top;
+}
+
+.summary td:first-child {
+    vertical-align: top;
+}
+
+/* Promocode */
+.promocode-field {
+    font-size: .7em;
+}
+
+.promocode-submit {
+    font-size: .6em;
+}
+
+.promocode-discount-info {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: normal;
+    font-size: .7em;
+    margin: 4% 0 0;
+    color: green;
 }
