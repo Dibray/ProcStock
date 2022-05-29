@@ -1,3 +1,5 @@
+const precision = 4; // Fractional digits
+
 class Stock
 {    
     stockName = document.createElement("input");
@@ -32,7 +34,7 @@ class Stock
 
     #calcPrice(stock)
     {
-        stock.stockPrice.textContent = stock.unitPrice.value * stock.quantity.value;
+        stock.stockPrice.textContent = (stock.unitPrice.value * stock.quantity.value).toFixed(precision);
         StockProcessing.procTotal();
     }
 
@@ -63,7 +65,6 @@ class StockProcessing
     static #promocodes = [new Promocode("dis10", 0.1), new Promocode("dis20", 0.2), new Promocode("dis30", 0.3)];
 
     static #vatPercent = 0.09;
-    static #precision = 4; // Fractional digits
 
     static #procTotalPrice()
     {
@@ -118,7 +119,7 @@ class StockProcessing
         info = document.createElement("p");
         info.className = "promocode-discount-info";
         info.textContent =
-            "Promocode discount " + (discount * 100) + "% (-" + (total * discount).toFixed(this.#precision) + ")";
+            "Promocode discount " + (discount * 100) + "% (-" + (total * discount).toFixed(precision) + ")";
 
         document.querySelector(".promocode-form").appendChild(info);
     }
@@ -138,11 +139,11 @@ class StockProcessing
     {
         let total = this.#procTotalPrice();
 
-        document.querySelector(".price-value").textContent = total.toFixed(this.#precision);
+        document.querySelector(".price-value").textContent = total.toFixed(precision);
 
         // Process VAT
         let vat = total * this.#vatPercent;
-        document.querySelector(".vat-value").textContent = vat.toFixed(this.#precision);
+        document.querySelector(".vat-value").textContent = vat.toFixed(precision);
         total += vat;
 
         // Process promocode
@@ -151,7 +152,7 @@ class StockProcessing
         
         total = total * (1 - promocodeDiscount);
 
-        document.querySelector(".total-value").textContent = total.toFixed(this.#precision);
+        document.querySelector(".total-value").textContent = total.toFixed(precision);
     }
     
     static newStock()

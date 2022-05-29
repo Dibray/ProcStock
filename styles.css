@@ -1,6 +1,12 @@
 body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin: 0;
     font-size: calc(1em + 1vh);
+}
+
+input,
+td {
+    padding: 0;
 }
 
 /* Stocks */
@@ -33,42 +39,85 @@ body {
 }
 
 /* Stock info */
+
+.stocks {
+    margin: 5vh 0 0 4vw;
+    text-align: right;
+}
+
+.stocks td {
+    border: lightgrey 1px solid;
+}
+
+.stocks tr:first-child {
+    font-weight: bold;
+}
+
+.stocks .name-column {
+    text-align: left;
+}
+
 .stock-info .stock-name {
     width: 40vw;
+    text-align: left;
 }
 
 .stock-info .unit-price {
     width: 10vw;
+    text-align: right;
 }
 
 .stock-info .quantity {
     width: 8vw;
+    text-align: right;
 }
 
+/* Summary */
+
 .summary {
-    margin: 5% auto;
-    font-size: 1.3em;
+    margin: 20% auto auto;
+    font-size: 1.2em;
     font-weight: bold;
-    vertical-align: top;
+}
+
+.summary tr > td {
+    text-align: right;
 }
 
 .summary td:first-child {
     vertical-align: top;
 }
 
+.total td {
+    padding-top: 6%;
+}
+
+.price-value {
+    font-weight: normal;
+}
+
+.vat-value {
+    font-weight: normal;
+    color: red;
+}
+
 /* Promocode */
 .promocode-field {
-    font-size: .7em;
+    font-size: 0.7em;
+}
+
+.promocode td:nth-child(2) {
+    text-align: left;
 }
 
 .promocode-submit {
-    font-size: .6em;
+    font-size: 0.6em;
 }
 
 .promocode-discount-info {
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-weight: normal;
-    font-size: .7em;
+    font-size: 0.7em;
     margin: 4% 0 0;
     color: green;
 }
